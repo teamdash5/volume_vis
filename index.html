@@ -1,0 +1,52 @@
+<html>
+</html>
+<script src="data_gov_request.js"></script>
+<script>
+
+
+
+
+my_display = function(data) {
+    if (!('result' in data && 'records' in data['result'])) {
+        print_text = 'Something went wrong.'
+    }
+    record_count = data['result']['records'].length
+    print_text = `Your search returned ${ record_count } results.`
+    document.write(print_text)
+    console.log(print_text)
+}                                    // Change this function to do whatever you want with the results of the query.
+
+
+
+
+function_name = my_display          // Change this to the of the         
+                                    // function to be called.
+                                    // Don't use quotes.
+
+
+
+
+columns = '*'                       // A list of column names.
+                                    // '*' gets them all.
+
+
+
+
+table_id = '9ec26edf-ea5b-4869-8c2c-38b41fb3a51d'
+                                    // Change this to the id of the table you want to quwry. You can get it by clicking "Explore" for a .csv file at data.gov.au, then clicking the green "Data-API" button.
+
+
+
+
+sql_query = 'WHERE latitude >-17 AND latitude <-16.8 AND longitude >145.2 AND longitude <145.4'
+                                    // Put your SQL query here.
+
+
+
+
+sendRequest(function_name, columns, table_id, sql_query)
+
+
+
+
+</script>
