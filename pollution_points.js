@@ -1,11 +1,5 @@
-<html>
-</html>
-<script src="data_gov_request.js"></script>
-<script>
-
-
 result_handler = function(data) {
-    console.log(data)
+    gps_year_to_points(data['result']['records'])
 }                                    // Change this function to do whatever you want with the results of the query.
 
 
@@ -32,7 +26,7 @@ for (i = 0; i < column_names.length; i++) {
 
 
 table_id = '9ec26edf-ea5b-4869-8c2c-38b41fb3a51d'
-                                    // Change this to the id of the table you want to quwry. You can get it by clicking "Explore" for a .csv file at data.gov.au, then clicking the green "Data-API" button.
+                                    // Change this to the id of the table you want to query. You can get it by clicking "Explore" for a .csv file at data.gov.au, then clicking the green "Data-API" button.
 
 
 sql_query = 'WHERE latitude >-17 AND latitude <-16.8 AND longitude >145.2 AND longitude <145.4'
@@ -42,4 +36,23 @@ sql_query = 'WHERE latitude >-17 AND latitude <-16.8 AND longitude >145.2 AND lo
 sendRequest(function_name, columns, table_id, sql_query)
 
 
-</script>
+gps_year_to_points = function(items) {
+    points = []
+    rows = { 'longitude': [], 'latitude': [], 'report_year': [] }
+    columns = ['longitude', 'latitude', 'report_year']
+    for (i = 0; i < items.length; i++) {
+        items[i]['report_year'] = parseInt(
+            items[i]['report_year'].substring(0,4)
+        )
+        for (j = 0; j < columns.length; j++) {
+            rows[columns[j]].push(items[i][columns[j]])
+        }
+    }
+    mins = {}
+    maxs = {}
+    for (i = 0; i < columns.length; i++) {
+        mins[columns[i]] = Math.min(...rows[columns[i]])
+        maxs[columns[i]] = Math.max(...rows[columns[i]])
+    }
+    console.log(mins, maxs)
+}
