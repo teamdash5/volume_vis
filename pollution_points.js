@@ -50,9 +50,18 @@ gps_year_to_points = function(items) {
     }
     mins = {}
     maxs = {}
+    borders = { 'longitude': 0.1,
+                'latitude': 0.1,
+                'report_year': 1 }
     for (i = 0; i < columns.length; i++) {
         mins[columns[i]] = Math.min(...rows[columns[i]])
+                           - borders[columns[i]]
         maxs[columns[i]] = Math.max(...rows[columns[i]])
+                           + borders[columns[i]]
     }
-    console.log(mins, maxs)
+    for (i = 0; i < items.length; i++) {
+        for (j = 0; j < columns.length; j++) {
+            console.log(items[i][columns[j]] - mins[columns[j]])
+        }
+    }
 }
